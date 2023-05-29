@@ -42,7 +42,7 @@ class HelpScout(object):
 
     def get_collection_articles(self, collection_id, status='published'):
         params = {
-            'pageSize': 100, 
+            'pageSize': 100,
             'status': status,
         }
 
@@ -55,10 +55,11 @@ class HelpScout(object):
         response = self.s.get(url)
         article = response.json().get('article')
         if article is None:
-            print response.status_code
-            print response.json()
+            print(response.status_code)
+            print(response.json())
         article['collection'] = self.collections[article['collectionId']]
-        article['categories'] = map(lambda c: self.categories[c]['slug'], article['categories'])
+        article['categories'] = list(map(lambda c: self.categories[c]['slug'], article['categories']))
+        article['keywords'] = article.get('keywords',[])
         return article
 
 
